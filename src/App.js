@@ -1,26 +1,78 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
+import {createTheme, ThemeProvider} from 'mineral-ui/themes';
+import sanity from './lib/sanity';
+import Main from './main';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+const mainQuery = `
+*[_type == "main"][0] {
+  content[]->{
+    actions[]{
+      text,
+      "slug": link->slug.current
+    },
+    background,
+    blurb,
+    details,
+    heading,
+    styling,
+    location
+  }
+}
+`;
+
+const menuQuery = `
+*[_type == "main"][0] {
+  menuitems[]{
+    text,
+    childpages[]->{
+      title,
+      slug,
+      'pathname': '/' + slug.current
+    }
+  }
+}
+`;
+
+const configQuery = `
+*[_type == "config"]{
+  logo
+}`;
+
+const myTheme = createTheme({
+  colors: {theme: 'red'},
+  overrides: {
+    fontFamily: 'Rubik'
+  }
+});
+
+export default function App() {
+  const [theData, setTheData] = useState();
+  const [dataFetched, setFetched] = useState(false);
+
+  useEffect(() => {
+    const allQuery = `
+      {
+        'menuData': ${menuQuery},
+        'mainData': ${mainQuery},
+        'logo': ${configQuery}
+      }
+    `;
+
+    async function fetchData() {
+      const result = await sanity.fetch(allQuery);
+      console.log(result);
+      setTheData(result);
+      setFetched(true);
+    }
+
+    fetchData();
+  }, []);
+
+  return dataFetched === true ? (
+    <ThemeProvider theme={myTheme}>
+      <Main theData={theData} />
+    </ThemeProvider>
+  ) : (
+    ''
   );
 }
-
-export default App;

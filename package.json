@@ -1,22 +1,90 @@
 {
-  "name": "trinityhills",
+  "name": "oneway",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/core": "^10.0.10",
+    "@emotion/styled": "^10.0.12",
+    "@react-google-maps/api": "^1.5.1",
+    "@react-hook/window-scroll": "^1.0.0",
+    "@sanity/block-content-to-react": "^2.0.6",
+    "@sanity/client": "^0.140.32",
+    "@sanity/image-url": "^0.140.12",
+    "date-fns": "^1.30.1",
+    "emotion-theming": "^10.0.10",
+    "mineral-ui": "^0.58.0",
+    "normalize.css": "^8.0.1",
+    "polished": "^3.4.1",
+    "query-string": "^6.7.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-hamburger-menu": "^1.1.1",
+    "react-radio-group": "^3.0.3",
+    "react-router-dom": "^5.0.1",
+    "react-router-hash-link": "^1.2.1",
+    "react-spring": "^8.0.23",
+    "reading-time": "^1.2.0",
+    "typeface-rubik": "^0.0.72",
+    "victory": "^32.2.3"
   },
   "devDependencies": {
-    "react-scripts": "3.0.1"
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-xo-react": "^0.19.0",
+    "eslint-plugin-emotion": "^10.0.7",
+    "eslint-plugin-react": "^7.13.0",
+    "eslint-plugin-react-hooks": "^1.6.0",
+    "prettier": "^1.18.2",
+    "prop-types": "^15.7.2",
+    "react-scripts": "^3.0.1",
+    "xo": "^0.24.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "now-build": "react-scripts build",
+    "now-dev": "react-scripts start"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "xo": {
+    "extends": [
+      "xo-react"
+    ],
+    "parser": "babel-eslint",
+    "prettier": true,
+    "space": true,
+    "plugins": [
+      "emotion"
+    ],
+    "rules": {
+      "emotion/jsx-import": "error",
+      "emotion/no-vanilla": "error",
+      "emotion/import-from-emotion": "error",
+      "emotion/styled-import": "error"
+    },
+    "overrides": [
+      {
+        "files": "**/__tests__/**/*.js",
+        "rules": {
+          "import/no-unassigned-import": [
+            "error",
+            {
+              "allow": [
+                "jest-dom/extend-expect"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "eslint": {
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
   },
   "browserslist": {
     "production": [
