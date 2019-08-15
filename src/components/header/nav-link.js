@@ -13,25 +13,26 @@ const ListItem = styled('li')`
 const Anchor = styled(NavLink)`
   text-decoration: none;
   text-transform: uppercase;
-  color: black;
+  color: #444446;
   font-family: 'Rubik';
   font-weight: 700;
   @media screen and (min-width: 768px) {
     color: white;
   }
+  :hover {
+    color: pink;
+  }
 `;
 
-const Navlink = props => (
+const Navlink = ({link, text}) => (
   <ListItem
-    isHighlighted={
-      props.link === document.location.pathname + document.location.hash
-    }
+    isHighlighted={link === document.location.pathname + document.location.hash}
   >
     <Anchor
-      to={props.link}
+      to={link}
       location={{pathname: document.location.pathname + document.location.hash}}
     >
-      {props.text}
+      {text}
     </Anchor>
   </ListItem>
 );

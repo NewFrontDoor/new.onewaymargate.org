@@ -8,13 +8,10 @@ import HomeBlock from './home-block-text-serializer';
 
 const Container = styled('div')`
   display: grid;
-  ${props => (props.areas ? `grid-template-areas: ${props.areas};` : '')};
-  grid-gap: 30px;
-  grid-template-columns: 1fr 80px 80px 1fr;
-  height: 80px;
+  grid-gap: 2em;
+  grid-template-columns: 1fr 100px 100px 1fr;
+  height: 100px;
   @media (min-width: 420px) {
-    ${props =>
-      props.areasDesktop ? `grid-template-areas: ${props.areasDesktop};` : ''};
     grid-template-columns: ${props => props.columns};
     grid-template-rows: ${props => props.rows};
     grid-gap: ${props => props.columnGap};
@@ -27,30 +24,42 @@ const Action = styled(Link)`
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  padding: 0.125em 0.9375rem 0;
+  padding: 0 1em;
   font-size: 0.95em;
   text-align: center;
   text-transform: uppercase;
   border: 1px solid;
   border-color: ${props =>
-    props.displayStyle.style === 'custom'
-      ? readableColor(props.displayStyle.custom_color.hex)
-      : textColors[props.displayStyle.style]};
+    props.displaystyle.style === 'custom'
+      ? readableColor(
+          props.displaystyle.custom_color.hex,
+          textColors.light,
+          textColors.dark
+        )
+      : textColors[props.displaystyle.style]};
   border-radius: 50%;
-  grid-column-start: ${props => props.column};
   color: ${props =>
-    props.displayStyle.style === 'custom'
-      ? readableColor(props.displayStyle.custom_color.hex)
-      : textColors[props.displayStyle.style]};
+    props.displaystyle.style === 'custom'
+      ? readableColor(
+          props.displaystyle.custom_color.hex,
+          textColors.light,
+          textColors.dark
+        )
+      : textColors[props.displaystyle.style]};
+  grid-column-start: ${props => props.column};
   :hover {
     background-color: ${props =>
-      props.displayStyle.style === 'custom'
-        ? readableColor(props.displayStyle.custom_color.hex)
-        : textColors[props.displayStyle.style]};
+      props.displaystyle.style === 'custom'
+        ? readableColor(
+            props.displaystyle.custom_color.hex,
+            textColors.light,
+            textColors.dark
+          )
+        : textColors[props.displaystyle.style]};
     color: ${props =>
-      props.displayStyle.style === 'custom'
-        ? props.displayStyle.custom_color.hex
-        : overlayColors[props.displayStyle.style]};
+      props.displaystyle.style === 'custom'
+        ? props.displaystyle.custom_color.hex
+        : overlayColors[props.displaystyle.style]};
     cursor: pointer;
   }
 `;
@@ -58,7 +67,7 @@ const Action = styled(Link)`
 const HomeH1 = styled('h1')`
   margin-bottom: 35px;
   font-size: 36px;
-  font-weight: 700;
+  font-weight: 400;
   margin-top: 0;
   line-height: 1.2;
   @media (min-width: 420px) {
@@ -76,14 +85,14 @@ const HomeBlurb = styled('p')`
 const overlayColors = {
   blue: '#007dc5',
   light: 'white',
-  dark: '#3b3a3c'
+  dark: '#444446'
 };
 
 const textColors = {
   blue: 'white',
-  light: 'black',
+  light: '#444446',
   dark: 'white',
-  custom: 'black'
+  custom: '#444446'
 };
 
 const opacities = {
@@ -101,23 +110,27 @@ const HomeSection = styled('div')`
   grid-template-columns: auto;
   grid-template-rows: 1fr 1fr 1fr;
   color: ${props =>
-    props.displayStyle.style === 'custom'
-      ? readableColor(props.displayStyle.custom_color.hex)
-      : textColors[props.displayStyle.style]};
+    props.displaystyle.style === 'custom'
+      ? readableColor(
+          props.displaystyle.custom_color.hex,
+          textColors.light,
+          textColors.dark
+        )
+      : textColors[props.displaystyle.style]};
 `;
 
 const HomeSectionBackground = styled('section')`
   background-color: ${props =>
-    props.displayStyle.style === 'custom'
-      ? props.displayStyle.custom_color.hex
-      : overlayColors[props.displayStyle.style]};
+    props.displaystyle.style === 'custom'
+      ? props.displaystyle.custom_color.hex
+      : overlayColors[props.displaystyle.style]};
   width: 100%;
   position: relative;
 `;
 
 const HomeSectionBackgroundImage = styled('div')`
   background-image: url(${props => props.background});
-  opacity: ${props => opacities[props.displayStyle]};
+  opacity: ${props => opacities[props.displaystyle]};
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -132,8 +145,6 @@ const HomeSectionInner = styled('div')`
   grid-row: 2;
   max-width: 980px;
   margin: auto;
-  padding-left: 2em;
-  padding-right: 2em;
   padding-top: 6.25rem;
   padding-bottom: 6.25rem;
   text-align: center;
@@ -151,16 +162,16 @@ export default function HomeLayout({
   blurb,
   actions,
   background,
-  displayStyle,
+  displaystyle,
   firstpage
 }) {
   return (
-    <HomeSectionBackground displayStyle={displayStyle}>
+    <HomeSectionBackground displaystyle={displaystyle}>
       <HomeSectionBackgroundImage
         background={urlFor(background).url()}
-        displayStyle={displayStyle.style}
+        displaystyle={displaystyle.style}
       />
-      <HomeSection displayStyle={displayStyle} firstpage={firstpage}>
+      <HomeSection displaystyle={displaystyle} firstpage={firstpage}>
         <HomeSectionInner>
           <HomeH1>{heading}</HomeH1>
           {blurb ? (
@@ -174,17 +185,15 @@ export default function HomeLayout({
             <Container
               columns={`auto repeat(${actions.length}, 7.25rem) auto`}
               rows="7.25rem"
-              columnGap="1.5rem"
-              rowGap="1.5rem"
+              gap="2rem"
             >
               {actions.map((link, index) => {
-                console.log(link);
                 return (
                   <Action
                     key={link.text}
                     to={`/${link.slug}`}
                     column={index + 2}
-                    displayStyle={displayStyle}
+                    displaystyle={displaystyle}
                   >
                     {link.text}
                   </Action>
@@ -226,7 +235,7 @@ export default function HomeLayout({
 
 HomeLayout.propTypes = {
   heading: PropTypes.string.isRequired,
-  blurb: PropTypes.string.isRequired,
+  blurb: PropTypes.string,
   actions: PropTypes.arrayOf(
     PropTypes.shape({
       text: PropTypes.string.isRequired,

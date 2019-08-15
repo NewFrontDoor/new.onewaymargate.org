@@ -6,7 +6,7 @@ import urlFor from '../lib/sanityImg';
 const BannerWrapper = styled('div')`
   position: relative;
   width: 100%;
-  background-color: #e7e3d4;
+  background-color: #4c516d;
 `;
 
 const BannerImage = styled('div')`
@@ -19,21 +19,21 @@ const BannerImage = styled('div')`
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  background-color: black;
+  background-color: #444446;
 `;
 
 const BannerInner = styled('div')`
   display: table;
-  color: ${readableColor('#E7E3D4')};
+  color: ${readableColor('#4c516d')};
   position: relative;
   height: 100%;
-  padding: 8% 0;
+  padding: 8% 0 4% 0;
   max-width: 980px;
   margin: auto;
   h1 {
-    margin-top: 90px;
-    font-weight: 700;
+    font-weight: 400;
     font-size: 36px;
+    font-family: 'Noto serif';
     line-height: 1.2;
     @media screen and (min-width: 768px) {
       font-size: 58px;

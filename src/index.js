@@ -4,6 +4,7 @@ import 'normalize.css';
 import App from './app';
 import * as serviceWorker from './serviceWorker';
 import './index.css';
+require('typeface-noto-serif');
 require('typeface-rubik');
 
 ReactDOM.render(<App />, document.getElementById('root'));

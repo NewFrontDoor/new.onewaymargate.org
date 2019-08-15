@@ -26,7 +26,7 @@ export default function Home({content}) {
             blurb={segment.blurb}
             actions={segment.actions}
             background={segment.background}
-            displayStyle={segment.styling}
+            displaystyle={segment.styling}
             firstpage={index === 0}
           />
         );
@@ -39,7 +39,7 @@ Home.propTypes = {
   content: PropTypes.arrayOf(
     PropTypes.shape({
       heading: PropTypes.string.isRequired,
-      blurb: PropTypes.string.isRequired,
+      blurb: PropTypes.string,
       actions: PropTypes.arrayOf(
         PropTypes.shape({
           text: PropTypes.string.isRequired,

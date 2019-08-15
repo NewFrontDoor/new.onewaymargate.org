@@ -12,7 +12,7 @@ const ListItem = styled('li')`
     opacity: 1;
     display: block;
   }
-  color: black;
+  color: #444446;
   @media screen and (min-width: 768px) {
     color: white;
     margin: 0.3125em 0 0 1.25em;
@@ -28,6 +28,9 @@ const Anchor = styled(NavLink)`
   font-family: 'Rubik';
   font-weight: 700;
   color: inherit;
+  :hover {
+    color: pink;
+  }
 `;
 const Submenu = styled('ul')`
   list-style: none;
@@ -41,7 +44,7 @@ const Submenu = styled('ul')`
   margin-top: 1rem;
   left: 0;
   display: none;
-  color: black;
+  color: #444446;
   padding: 0.75em 0.5em 0.75em 0.625em;
   border-radius: 0.3125em;
   background-color: white;

@@ -14,17 +14,10 @@ const Main = styled('article')`
   color: #444444;
 `;
 
-const Breadcrumb = styled('div')`
-  width: 100%;
-  color: black;
-`;
+export default function Page({slug, pageData}) {
+  const [data, setData] = useState(pageData);
+  const [dataFetched, setDataFetched] = useState(Boolean(pageData));
 
-const BreadcrumbInner = styled('div')`
-  max-width: 1170px;
-  margin: 0.8125em auto;
-`;
-
-export default function Page({slug}) {
   const pageQuery = `
     *[_type == "page" && slug.current match '${slug}'] {
       ...,
@@ -34,8 +27,6 @@ export default function Page({slug}) {
       }
     }
   `;
-  const [data, setData] = useState(null);
-  const [dataFetched, setDataFetched] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,24 +35,26 @@ export default function Page({slug}) {
       setDataFetched(true);
     };
 
-    fetchData();
-  }, [pageQuery]);
+    if (dataFetched === false) {
+      fetchData();
+    } else {
+      setData(pageData);
+    }
+  }, [dataFetched, slug, pageData, pageQuery]);
 
-  return (
+  return dataFetched ? (
     <>
       <Banner data={data} />
-      <Breadcrumb>
-        <BreadcrumbInner>
-          <div>LINK / LINK / LINK</div>
-        </BreadcrumbInner>
-      </Breadcrumb>
       <Main>
-        <HomeBlock blocks={dataFetched ? data.body : ''} />
+        <HomeBlock blocks={data.body} />
       </Main>
     </>
+  ) : (
+    ''
   );
 }
 
 Page.propTypes = {
-  slug: PropTypes.string.isRequired
+  slug: PropTypes.string.isRequired,
+  pageData: PropTypes.object
 };

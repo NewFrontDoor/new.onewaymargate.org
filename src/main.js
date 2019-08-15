@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {css, jsx} from '@emotion/core';
-import NavBar from './components/header/nav-bar';
+import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import Home from './routes/home';
 import Page from './routes/page';
@@ -13,18 +13,36 @@ const body = css`
   color: white;
 `;
 
-export default function Main({theData: {menuData, mainData, logo}}) {
+export default function Main({mainData: {menuData, mainData}, pagesData}) {
   return (
     <BrowserRouter>
       <div css={body}>
-        <NavBar navlinks={menuData.menuitems} logo={logo[0].logo} />
+        <Header navlinks={menuData.menuitems} />
         <Switch>
           <Route
             exact
             path={process.env.PUBLIC_URL + '/'}
             render={() => <Home content={mainData.content} />}
           />
-          <Route path="/:slug" component={Slug} />
+          <Route
+            exact
+            path={process.env.PUBLIC_URL + '/talks'}
+            render={({match}) => (
+              <Sermons
+                slug="talks"
+                pageData={pagesData ? pagesData[match.params.slug] : undefined}
+              />
+            )}
+          />
+          <Route
+            path="/:slug"
+            render={({match}) => (
+              <Page
+                slug={match.params.slug}
+                pageData={pagesData ? pagesData[match.params.slug] : undefined}
+              />
+            )}
+          />
         </Switch>
         <Footer />
       </div>
@@ -32,21 +50,7 @@ export default function Main({theData: {menuData, mainData, logo}}) {
   );
 }
 
-function Slug({match}) {
-  if (match.params.slug === 'sermons') {
-    return <Sermons slug={match.params.slug} />;
-  }
-
-  return <Page slug={match.params.slug} />;
-}
-
 Main.propTypes = {
-  posts: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      _createdAt: PropTypes.string.isRequired,
-      body: PropTypes.string,
-      categories: PropTypes.string.isRequired
-    })
-  ).isRequired
+  mainData: PropTypes.object.isRequired,
+  pagesData: PropTypes.object
 };

@@ -11,14 +11,10 @@ const Nav = styled('nav')`
   top: 0;
   width: 100vw;
   padding: 0;
-  ${props => (props.offset > 50 ? `background-color: #3b3a3c;` : '')}
+  ${props => (props.offset > 50 ? `background-color: #4c516d;` : '')}
   @media (min-width: 768px) {
-    padding: 2.8125em 0;
-    ${props =>
-      props.offset > 50
-        ? `padding: 0.8em 0;
-          background-color: #3b3a3c;`
-        : ''}
+    padding: 0.8em 0;
+    ${props => (props.offset > 50 ? `background-color: #4c516d;` : '')}
   }
 `;
 
@@ -43,6 +39,7 @@ const Logo = styled(Link)`
   #curve2,
   #oneway,
   #christianchurch {
+    fill: white;
     ${props => (props.offset > 50 ? `fill: white` : '')}
   }
   svg {
@@ -59,7 +56,7 @@ const Logo = styled(Link)`
   }
 `;
 
-export default function NavBar({navlinks, logo}) {
+export default function Header({navlinks}) {
   const offset = useWindowScroll(60);
   return (
     <Nav offset={offset}>

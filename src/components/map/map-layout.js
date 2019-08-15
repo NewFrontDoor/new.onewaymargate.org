@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {GoogleMap, LoadScript, Marker} from '@react-google-maps/api';
+import {mapsKey} from '../../lib/config';
 import MapOverlay from './map-overlay';
 
 const HomeSection = styled('div')`
@@ -10,7 +11,7 @@ const HomeSection = styled('div')`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 200px 200px;
-  color: black;
+  color: #444446;
   @media (min-width: 420px) {
     height: calc(100vh - 300px);
     grid-template-columns: 3fr 3fr;
@@ -29,7 +30,6 @@ const HomeMapInner = styled('div')`
 
 export default function MapLayout({
   heading,
-  blurb,
   actions,
   details,
   location
@@ -37,10 +37,7 @@ export default function MapLayout({
   return (
     <HomeSection>
       <HomeMapInner>
-        <LoadScript
-          id="script-loader"
-          googleMapsApiKey="AIzaSyCmem8o38c54JC8Wekoahatu6aODa7q3y0"
-        >
+        <LoadScript id="script-loader" googleMapsApiKey={mapsKey}>
           <GoogleMap
             mapContainerStyle={{
               height: '100%',
@@ -59,17 +56,13 @@ export default function MapLayout({
                   }
             }
             options={{
-              disableDefaultUI: true,
-              gestureHandling: 'none'
+              disableDefaultUI: true
             }}
           >
             <Marker
               position={{
                 lat: location.location.lat,
                 lng: location.location.lng
-              }}
-              onLoad={marker => {
-                console.log('marker:', marker);
               }}
             />
           </GoogleMap>

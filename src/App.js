@@ -33,10 +33,17 @@ const menuQuery = `
 }
 `;
 
-const configQuery = `
-*[_type == "config"]{
-  logo
-}`;
+const pagesQuery = `
+  *[_type == "page"] {
+    ...,
+      body[]{
+        ...,
+        _type == 'reference' => @->
+      },
+      'id': _id,
+    'pathname': '/' + slug.current
+  }
+`;
 
 const myTheme = createTheme({
   colors: {theme: 'red'},
@@ -46,31 +53,48 @@ const myTheme = createTheme({
 });
 
 export default function App() {
-  const [theData, setTheData] = useState();
-  const [dataFetched, setFetched] = useState(false);
+  const [mainData, setMainData] = useState();
+  const [pagesData, setPagesData] = useState();
+  const [mainFetch, setMainFetch] = useState(false);
 
   useEffect(() => {
     const allQuery = `
       {
         'menuData': ${menuQuery},
-        'mainData': ${mainQuery},
-        'logo': ${configQuery}
+        'mainData': ${mainQuery}
       }
     `;
 
     async function fetchData() {
       const result = await sanity.fetch(allQuery);
-      console.log(result);
-      setTheData(result);
-      setFetched(true);
+      setMainData(result);
+      setMainFetch(true);
     }
 
     fetchData();
   }, []);
 
-  return dataFetched === true ? (
+  useEffect(() => {
+    async function fetchData() {
+      const result = await sanity.fetch(pagesQuery);
+
+      const arrayToObject = array =>
+        array.reduce((obj, item) => {
+          obj[item.slug.current] = item;
+          return obj;
+        }, {});
+
+      const pagesObject = arrayToObject(result);
+
+      setPagesData(pagesObject);
+    }
+
+    fetchData();
+  }, [mainFetch]);
+
+  return mainFetch === true ? (
     <ThemeProvider theme={myTheme}>
-      <Main theData={theData} />
+      <Main mainData={mainData} pagesData={pagesData} />
     </ThemeProvider>
   ) : (
     ''

@@ -7,7 +7,7 @@ const FooterWrapper = styled('footer')`
   width: 100%;
   padding-top: 2rem;
   padding-bottom: 2rem;
-  background-color: #3b3a3c;
+  background-color: #4c516d;
   color: white;
 `;
 

@@ -18,7 +18,7 @@ const Nav = styled('ul')`
   padding: 2px;
   border-radius: 2px;
   background-color: white;
-  color: black;
+  color: #444446;
   width: auto;
   @media screen and (min-width: 768px) {
     padding: 0;
@@ -37,7 +37,7 @@ const Nav = styled('ul')`
 const Search = styled('div')`
   height: 16px;
   width: 16px;
-  color: black;
+  color: #444446;
   height: 100%;
   margin: 0 0 0 1.25em;
   padding: 0;
@@ -69,7 +69,7 @@ export default function Navigation({navlinks, offset}) {
           height={22.5}
           strokeWidth={2}
           rotate={0}
-          color={offset > 50 ? 'white' : 'black'}
+          color={offset > 50 ? 'white' : '#444446'}
           borderRadius={0}
           animationDuration={0.3}
         />

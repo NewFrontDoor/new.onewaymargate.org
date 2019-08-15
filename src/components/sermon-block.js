@@ -38,10 +38,10 @@ const Actions = styled('section')`
   width: 50%;
   margin: auto;
   button {
-      background: none;
-      text-transform: lowercase;
-      font-size: .8em;
-      padding: 10px 15px 10px 15px;
+    background: none;
+    text-transform: lowercase;
+    font-size: 0.8em;
+    padding: 10px 15px 10px 15px;
   }
 `;
 
@@ -49,7 +49,7 @@ export default function SermonBlock({title, date, preacher, series, book}) {
   return (
     <SermonOuter>
       <div>
-        <img src={placeholder} />
+        <img src={placeholder} alt={title} />
       </div>
       <h2>{title}</h2>
       <ul>

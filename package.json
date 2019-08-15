@@ -24,6 +24,7 @@
     "react-router-hash-link": "^1.2.1",
     "react-spring": "^8.0.23",
     "reading-time": "^1.2.0",
+    "typeface-noto-serif": "0.0.72",
     "typeface-rubik": "^0.0.72",
     "victory": "^32.2.3"
   },

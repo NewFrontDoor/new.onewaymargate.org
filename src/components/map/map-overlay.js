@@ -25,12 +25,12 @@ const Action = styled(Link)`
   text-transform: uppercase;
   border: 1px solid;
   text-align: center;
-  border-color: black;
+  border-color: #444446;
   border-radius: 40px;
   grid-column-start: ${props => props.column + 1};
-  color: black;
+  color: #444446;
   :hover {
-    background-color: black;
+    background-color: #444446;
     color: white;
     cursor: pointer;
   }
