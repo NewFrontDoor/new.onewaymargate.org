@@ -4,7 +4,16 @@ import Text from 'mineral-ui/Text';
 import {css} from '@emotion/core';
 import styled from '@emotion/styled';
 import {NavHashLink as NavLink} from 'react-router-hash-link';
-import sanity from '../lib/sanity';
+
+const serializers = {
+  types: {
+    block: CustomStyleSerializer
+  },
+  marks: {
+    link: CustomLinkSerializer,
+    internalLink: InternalLinkSerializer
+  }
+};
 
 const Blockquote = css`
   position: relative;
@@ -43,8 +52,6 @@ const normalStyle = props => css`
   }
 `;
 
-const BlockContentInt = styled(BlockContent)(normalStyle);
-
 const scrollWithOffset = (el, offset) => {
   const elementPosition = el.offsetTop - offset;
   window.scroll({
@@ -71,6 +78,11 @@ const CustomLinkSerializer = props => {
   return <a href={props.mark.href}>{props.children}</a>;
 };
 
+
+const InternalLinkSerializer = props => {
+  return <a href={props.mark.slug}>{props.children}</a>;
+};
+
 const CustomStyleSerializer = props => {
   const style = props.node.style || 'normal';
   if (/^h\d/.test(style)) return <Text element={style}>{props.children}</Text>;
@@ -84,22 +96,16 @@ const CustomStyleSerializer = props => {
     default:
       return (
         <Text appearance="prose" element="p">
-          {props.children}
+          poop{props.children}
         </Text>
       );
   }
 };
 
 const SanityBlock = props => (
-  <BlockContentInt
-    width={props.width}
-    projectId={sanity.projectId}
-    dataset={sanity.dataset}
+  <BlockContent
     blocks={props.blocks}
-    serializers={{
-      types: {block: CustomStyleSerializer},
-      marks: {link: CustomLinkSerializer}
-    }}
+    serializers={serializers}
   />
 );
 

@@ -34,7 +34,7 @@ const sampleData = [
 ];
 
 const Main = styled('article')`
-  max-width: 1170px;
+  max-width: 1200px;
   margin: auto;
   font-size: 1.15em;
   line-height: 1.8;
@@ -68,16 +68,12 @@ export default function Page({slug, pageData}) {
       setData(pageData);
     }
   }, [dataFetched, slug, pageData, pageQuery]);
-
-  console.log(data);
-
-  console.log(dataFetched);
   
   return dataFetched ? (
     <>
       <Banner data={data} />
       <Main>
-        {data.body ? <HomeBlock blocks={data.body} /> : ''}
+        <HomeBlock blocks={data.body} />
         <SermonLayout sermons={sampleData} />
       </Main>
     </>

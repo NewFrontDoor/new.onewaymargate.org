@@ -25,4 +25,22 @@ h4,
 h5,
 h6 {
   font-family: "Noto serif";
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 1.9em;
+}
+
+h3 {
+  font-size: 1.6em;
+}
+
+h4 {
+  font-size: 1.4em;
+  font-style: italic;
+}
+
+h5 {
+  font-size: 1.2em;
 }

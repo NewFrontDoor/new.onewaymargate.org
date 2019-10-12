@@ -39,6 +39,29 @@ const Action = styled(Link)`
   }
 `;
 
+const Direction = styled('a')`
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 10px 0;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  border: 1px solid;
+  text-align: center;
+  border-color: #444446;
+  border-radius: 40px;
+  grid-column-start: ${props => props.column + 1};
+  color: #444446;
+  :hover {
+    background-color: #444446;
+    color: white;
+    cursor: pointer;
+  }
+  @media (min-width: 420px) {
+    grid-column-start: ${props => props.column + 2};
+  }
+`;
+
 const HeadingH2 = styled('h2')`
   margin-bottom: 2.1875rem;
   font-size: 2.4em;
@@ -81,14 +104,14 @@ const types = {
   email: <EmailIcon width="25px" />
 };
 
-export default function MapOverlay({heading, details, actions}) {
+export default function MapOverlay({heading, details, actions, lat, long}) {
   return (
     <Overlay>
       {heading ? <HeadingH2>{heading}</HeadingH2> : ''}
       {details.length > 0
         ? details.map(detail => {
             return (
-              <DetailWrapper>
+              <DetailWrapper key={detail.value}>
                 {types[detail.type]}
                 {detail.value}
               </DetailWrapper>
@@ -98,6 +121,18 @@ export default function MapOverlay({heading, details, actions}) {
       {actions.length > 0 ? (
         <Container columns={`auto repeat(${actions.length}, 7.25rem) auto`}>
           {actions.map((link, index) => {
+            if (link.directions) {
+              return (
+                <Direction
+                  key={link.text}
+                  column={index}
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${long}`}
+                >
+                  {link.text}
+                </Direction>
+              );
+            }
+
             return (
               <Action key={link.text} to={`/${link.slug}`} column={index}>
                 {link.text}

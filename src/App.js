@@ -8,7 +8,8 @@ const mainQuery = `
   content[]->{
     actions[]{
       text,
-      "slug": link->slug.current
+      "slug": link->slug.current,
+      directions
     },
     background,
     blurb,
@@ -38,7 +39,19 @@ const pagesQuery = `
     ...,
       body[]{
         ...,
-        _type == 'reference' => @->
+        _type == 'reference' => @-> {
+          ...,
+          blocks[] {
+            ...,
+            _type == 'reference' => @ ->
+          }
+        },
+        markDefs[] {
+          ...,
+          _type == 'internalLink' => {
+              'slug': @.reference->slug.current
+          }
+        }
       },
       'id': _id,
     'pathname': '/' + slug.current

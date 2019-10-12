@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import {readableColor} from 'polished';
 import {Link} from 'react-router-dom';
+import {useSpring, animated} from 'react-spring';
 import urlFor from '../lib/sanityImg';
 import HomeBlock from './home-block-text-serializer';
 
@@ -64,7 +65,7 @@ const Action = styled(Link)`
   }
 `;
 
-const HomeH1 = styled('h1')`
+const HomeH1 = styled.h1`
   margin-bottom: 35px;
   font-size: 36px;
   font-weight: 400;
@@ -128,13 +129,9 @@ const HomeSectionBackground = styled('section')`
   position: relative;
 `;
 
-const HomeSectionBackgroundImage = styled('div')`
-  background-image: url(${props => props.background});
+const HomeSectionBackgroundImage = styled(animated.img)`
   opacity: ${props => opacities[props.displaystyle]};
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
+  object-fit: cover;
   position: absolute;
   top: 0;
   width: 100%;
@@ -165,11 +162,14 @@ export default function HomeLayout({
   displaystyle,
   firstpage
 }) {
+  const [fade, set] = useSpring(() => ({opacity: 0, config: {duration: 500}}));
   return (
     <HomeSectionBackground displaystyle={displaystyle}>
       <HomeSectionBackgroundImage
-        background={urlFor(background).url()}
+        src={urlFor(background).url()}
         displaystyle={displaystyle.style}
+        style={fade}
+        onLoad={() => set({opacity: 0.15})}
       />
       <HomeSection displaystyle={displaystyle} firstpage={firstpage}>
         <HomeSectionInner>

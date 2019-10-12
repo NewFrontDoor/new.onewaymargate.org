@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {css, jsx} from '@emotion/core';
-import Header from './components/header/header';
+import Header from './components/header/header-fixed';
 import Footer from './components/footer/footer';
 import Home from './routes/home';
 import Page from './routes/page';
@@ -30,7 +30,7 @@ export default function Main({mainData: {menuData, mainData}, pagesData}) {
             render={({match}) => (
               <Sermons
                 slug="talks"
-                pageData={pagesData ? pagesData[match.params.slug] : undefined}
+                pageData={pagesData ? pagesData.talks : undefined}
               />
             )}
           />

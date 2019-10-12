@@ -6,7 +6,7 @@ import Banner from '../components/banner';
 import sanity from '../lib/sanity';
 
 const Main = styled('article')`
-  max-width: 700px;
+  max-width: ${props => (props.thing > 0 ? '1200px' : '700px')};
   margin: auto;
   padding: 15px;
   font-size: 1.15em;
@@ -23,7 +23,19 @@ export default function Page({slug, pageData}) {
       ...,
       body[]{
         ...,
-        _type == 'reference' => @->
+        _type == 'reference' => @-> {
+          ...,
+          blocks[] {
+            ...,
+            _type == 'reference' => @ ->
+          }
+        },
+        markDefs[] {
+          ...,
+          _type == 'internalLink' => {
+              'slug': @.reference->slug.current
+          }
+        }
       }
     }
   `;
@@ -45,7 +57,13 @@ export default function Page({slug, pageData}) {
   return dataFetched ? (
     <>
       <Banner data={data} />
-      <Main>
+      <Main
+        thing={
+          data.body.filter(obj => {
+            return obj._type === 'gridblock';
+          }).length
+        }
+      >
         <HomeBlock blocks={data.body} />
       </Main>
     </>

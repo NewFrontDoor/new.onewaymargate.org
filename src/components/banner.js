@@ -27,9 +27,12 @@ const BannerInner = styled('div')`
   color: ${readableColor('#4c516d')};
   position: relative;
   height: 100%;
-  padding: 8% 0 4% 0;
+  padding-top: 12%;
   max-width: 980px;
   margin: auto;
+  @media screen and (min-width: 768px) {
+    padding: 8% 0 4% 0;
+  }
   h1 {
     font-weight: 400;
     font-size: 36px;

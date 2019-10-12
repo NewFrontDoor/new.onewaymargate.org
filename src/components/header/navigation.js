@@ -69,7 +69,7 @@ export default function Navigation({navlinks, offset}) {
           height={22.5}
           strokeWidth={2}
           rotate={0}
-          color={offset > 50 ? 'white' : '#444446'}
+          color="white"
           borderRadius={0}
           animationDuration={0.3}
         />
