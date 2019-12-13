@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import Form from './form';
 import GridBlock from './grid-block';
 import Card from './card-grid-item';
+import HorizontalCard from './horizontal-card-grid-item';
 import Overlay from './overlay-grid-item';
 
 const BlockContentInt = styled(BlockContent)(`line-height: 26px;`);
@@ -22,8 +23,11 @@ function GridBlockSerializer({node: {blocks, columns, style}}) {
     <GridBlock
       items={blocks}
       columns={
-        columns === undefined|null ? `repeat(auto-fit, minmax(200px, 1fr))` : `repeat(${columns}, 1fr)`
+        (columns === undefined) | null
+          ? `repeat(auto-fit, minmax(200px, 1fr))`
+          : `repeat(${columns}, 1fr)`
       }
+      columnRawValue={(columns === undefined) | null ? 1 : columns}
       gap="20px"
       style={style}
       marginBottom="0"
@@ -32,6 +36,8 @@ function GridBlockSerializer({node: {blocks, columns, style}}) {
           <Card {...data} />
         ) : style === 'overlay' ? (
           <Overlay {...data} />
+        ) : style === 'horizontal' ? (
+          <HorizontalCard {...data} />
         ) : (
           ''
         )

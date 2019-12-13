@@ -33,7 +33,7 @@ const Wrapper = styled.a`
 
 export default function Overlay({header, image, link}) {
   return (
-    <Wrapper href={link[0].url}>
+    <Wrapper href={link}>
       <Image
         src={urlFor(image)
           .width(350)

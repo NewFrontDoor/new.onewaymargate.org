@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import HomeLayout from '../components/home-segment';
 import MapLayout from '../components/map/map-layout';
 
 export default function Home({content}) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       {content.map((segment, index) => {

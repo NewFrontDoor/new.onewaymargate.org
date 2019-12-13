@@ -190,12 +190,12 @@ export default function HomeLayout({
               {actions.map((link, index) => {
                 return (
                   <Action
-                    key={link.text}
-                    to={`/${link.slug}`}
+                    key={link.label}
+                    to={`/${link.url}`}
                     column={index + 2}
                     displaystyle={displaystyle}
                   >
-                    {link.text}
+                    {link.label}
                   </Action>
                 );
               })}

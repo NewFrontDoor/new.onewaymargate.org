@@ -6,7 +6,6 @@ import {SearchCollection as SermonFilter} from '@newfrontdoor/search';
 import HomeBlock from '../components/home-block-text-serializer';
 import Banner from '../components/banner';
 import sanity from '../lib/sanity';
-import SermonGrid from '../components/sermon-grid';
 
 const headers = [
   {heading: 'Title', key: 'title', searchable: true},
@@ -18,21 +17,19 @@ const headers = [
 
 const Main = styled('article')`
   max-width: 1200px;
-  padding: 20px;
   margin: auto;
   font-size: 1.15em;
   line-height: 1.8;
   color: #444444;
 `;
 
-export default function Sermons({slug, pageData, sermonData, def}) {
+export default function AllSermons({slug, pageData, sermonData}) {
   const [data, setData] = useState(pageData);
   const [dataFetched, setDataFetched] = useState(Boolean(pageData));
   const [sermonsFetched, setSermonsFetched] = useState(Boolean(sermonData));
   const [sermons, setSermons] = useState(sermonData);
-  const [series, setSeries] = useState();
-  const [seriesFetched, setSeriesFetched] = useState(false);
-  const [sermonsSubset, setSubset] = useState(sermonData.slice(0, 10));
+  const [sermonsSubset, setSubset] = useState(sermonData);
+
   const pageQuery = `
     *[_type == "page" && slug.current match '${slug}'] {
       ...,
@@ -47,8 +44,8 @@ export default function Sermons({slug, pageData, sermonData, def}) {
   *[_type == "sermons"] {
     "key": _id,
     title,
-    _id,
-    preachedDate,
+    "nid": _id,
+    "date": preachedDate,
     "preacher": preacher->name,
     "series": series->title,
     "book": passage,
@@ -56,16 +53,6 @@ export default function Sermons({slug, pageData, sermonData, def}) {
     "slug": slug.current,
     "image": series->image
   } | order(preachedDate desc)
-  `;
-
-  const seriesQuery = `
-    *[_type == "series"] {
-      ...,
-      "id": _id,
-      title,
-      image,
-      "link": ''
-    }|order(_updatedAt desc)
   `;
 
   useEffect(() => {
@@ -90,7 +77,7 @@ export default function Sermons({slug, pageData, sermonData, def}) {
     const fetchData = async () => {
       const result = await sanity.fetch(sermonQuery);
       setSermons(result);
-      setSubset(result.slice(0, 10));
+      setSubset(result);
       setSermonsFetched(true);
     };
 
@@ -98,21 +85,9 @@ export default function Sermons({slug, pageData, sermonData, def}) {
       fetchData();
     } else {
       setSermons(sermonData);
-      setSubset(sermonData.slice(0, 10));
+      setSubset(sermonData);
     }
-  }, [sermonData, sermonQuery, sermonsFetched]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await sanity.fetch(seriesQuery);
-      setSeries(result);
-      setSeriesFetched(true);
-    };
-
-    if (seriesFetched === false) {
-      fetchData();
-    }
-  }, [seriesFetched, seriesQuery]);
+  }, [sermonQuery, sermonData, sermonsFetched]);
 
   return (
     dataFetched && (
@@ -120,18 +95,22 @@ export default function Sermons({slug, pageData, sermonData, def}) {
         <Banner data={data} />
         <Main>
           <HomeBlock blocks={data.body} />
+          <SermonFilter
+            dataCollection={sermons}
+            setSubset={setSubset}
+            headers={headers}
+            labels={{
+              searchbox: 'Filter sermons:',
+              checkbox: `use 'inclusive' mode`
+            }}
+          />
           {sermonsFetched && (
-            <>
-              {seriesFetched && (
-                <SermonGrid sermons={sermons} series={series} def={def} />
-              )}
-              <SermonTable
-                sermons={sermonsSubset}
-                headers={headers}
-                columnHide={[5]}
-                sermonDirectory="talks"
-              />
-            </>
+            <SermonTable
+              sermons={sermonsSubset}
+              headers={headers}
+              columnHide={[5]}
+              sermonDirectory="talks"
+            />
           )}
         </Main>
       </>
@@ -139,7 +118,7 @@ export default function Sermons({slug, pageData, sermonData, def}) {
   );
 }
 
-Sermons.propTypes = {
+AllSermons.propTypes = {
   slug: PropTypes.string.isRequired,
   pageData: PropTypes.array
 };

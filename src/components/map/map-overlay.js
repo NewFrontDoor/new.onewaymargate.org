@@ -1,4 +1,5 @@
-import React from 'react';
+/** @jsx jsx */
+import {css, jsx} from '@emotion/core';
 import styled from '@emotion/styled';
 import {Link} from 'react-router-dom';
 import {ReactComponent as ClockIcon} from './clock.svg';
@@ -16,7 +17,30 @@ const Container = styled('div')`
   }
 `;
 
-const Action = styled(Link)`
+const IntLink = styled(Link)`
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 10px 0;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  border: 1px solid;
+  text-align: center;
+  border-color: #444446;
+  border-radius: 40px;
+  grid-column-start: ${props => props.column + 1};
+  color: #444446;
+  :hover {
+    background-color: #444446;
+    color: white;
+    cursor: pointer;
+  }
+  @media (min-width: 420px) {
+    grid-column-start: ${props => props.column + 2};
+  }
+`;
+
+const ExtLink = styled('a')`
   align-items: center;
   justify-content: center;
   text-decoration: none;
@@ -104,6 +128,24 @@ const types = {
   email: <EmailIcon width="25px" />
 };
 
+function InternalLink({url, children, column}) {
+  return (
+    <IntLink column={column} to={`/${url}`}>
+      {children}
+    </IntLink>
+  );
+}
+
+function ExternalLink({url, children, column}) {
+  return (
+    <ExtLink column={column} href={`${url}`}>
+      {children}
+    </ExtLink>
+  );
+}
+
+const regex = /^(?!www\.|(?:http|ftp)s?:\/\/|[A-Za-z]:\\|\/\/).*/;
+
 export default function MapOverlay({heading, details, actions, lat, long}) {
   return (
     <Overlay>
@@ -121,22 +163,31 @@ export default function MapOverlay({heading, details, actions, lat, long}) {
       {actions.length > 0 ? (
         <Container columns={`auto repeat(${actions.length}, 7.25rem) auto`}>
           {actions.map((link, index) => {
-            if (link.directions) {
+            console.log(link);
+            if (link.name === 'directions') {
               return (
                 <Direction
-                  key={link.text}
+                  key={link.label}
                   column={index}
                   href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${long}`}
                 >
-                  {link.text}
+                  {link.label}
                 </Direction>
               );
             }
 
+            if (link.name === 'pagereference') {
+              return (
+                <InternalLink column={index} url={link.url}>
+                  {link.label}
+                </InternalLink>
+              );
+            }
+
             return (
-              <Action key={link.text} to={`/${link.slug}`} column={index}>
-                {link.text}
-              </Action>
+              <ExternalLink column={index} url={link.url}>
+                {link.label}
+              </ExternalLink>
             );
           })}
         </Container>

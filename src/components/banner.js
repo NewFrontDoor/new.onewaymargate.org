@@ -45,9 +45,10 @@ const BannerInner = styled('div')`
 `;
 
 export default function Banner({data}) {
+  const image = data.mainImage ? data.mainImage : null;
   return (
     <BannerWrapper>
-      <BannerImage image={data ? data.mainImage : ''} />
+      <BannerImage image={typeof image === 'string' ? image : ''} />
       <BannerInner>
         <h1>{data ? data.title : ''}</h1>
       </BannerInner>

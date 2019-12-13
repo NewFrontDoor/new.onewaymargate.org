@@ -1,7 +1,9 @@
-import React from 'react';
+/** @jsx jsx */
+import {css, jsx} from '@emotion/core';
 import styled from '@emotion/styled';
 import {Link} from 'react-router-dom';
 import urlFor from '../lib/sanityImg';
+import HomeBlock from './home-block-text-serializer';
 
 const Actions = styled('section')`
   grid-column: 1/1;
@@ -19,7 +21,7 @@ const Actions = styled('section')`
   }
 `;
 
-const Action = styled(Link)`
+const action = css`
   text-decoration: none;
   padding: 10px 0;
   font-size: 0.8em;
@@ -52,27 +54,66 @@ const Image = styled.img`
   width: 100%;
 `;
 
-export default function Card({
-  title,
-  shortdescription,
-  mainImage,
-  action,
-  slug
-}) {
+function InternalLink({url, children}) {
   return (
-    <>
-      <Image
-        src={urlFor(mainImage)
-          .width(530)
-          .height(135)
-          .auto('format')
-          .url()}
-        alt={title}
-      />
-      <Header>{title}</Header>
-      <Actions>
-        <Action to={slug.current}>{action ? action : 'VIEW PAGE'}</Action>
-      </Actions>
-    </>
+    <Link css={action} to={`/${url}`}>
+      {children}
+    </Link>
+  );
+}
+
+function ExternalLink({url, children}) {
+  return (
+    <a css={action} href={`${url}`}>
+      {children}
+    </a>
+  );
+}
+
+const regex = /^(?!www\.|(?:http|ftp)s?:\/\/|[A-Za-z]:\\|\/\/).*/;
+
+export default function Card({header, description, image, link, action}) {
+  return (
+    <div>
+      {regex.test(link) ? (
+        <Link to={`/${link}`}>
+          <Image
+            src={urlFor(image)
+              .width(530)
+              .height(135)
+              .auto('format')
+              .url()}
+            alt={header}
+          />
+          <Header>{header}</Header>
+        </Link>
+      ) : (
+        <a href={link}>
+          <Image
+            src={urlFor(image)
+              .width(530)
+              .height(135)
+              .auto('format')
+              .url()}
+            alt={header}
+          />
+          <Header>{header}</Header>
+        </a>
+      )}
+      <HomeBlock blocks={description} />
+      {link && (
+        <Actions>
+          {regex.test(link) ? (
+            <InternalLink url={link}>
+              {action ? action : 'VIEW PAGE'}
+            </InternalLink>
+          ) : (
+            <ExternalLink url={link}>
+              {action ? action : 'VIEW PAGE'}
+            </ExternalLink>
+          )}
+        </Actions>
+      )}
+    </div>
   );
 }

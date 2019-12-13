@@ -7,7 +7,8 @@ const Grid = styled('div')`
   grid-template-rows: auto;
   gap: ${props => (props.gap ? props.gap : `5%`)};
   @media (min-width: 450px) and (max-width: 890px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: ${props =>
+      `repeat(${Math.round(props.columnRawValue / 2)}, 1fr)`};
   }
 `;
 
@@ -20,13 +21,14 @@ const ItemOuter = styled('div')`
 export default function GridBlock({
   items,
   columns,
+  columnRawValue,
   renderProp,
   gap,
   marginBottom,
   style
 }) {
   return (
-    <Grid columns={columns} gap={gap}>
+    <Grid columns={columns} columnRawValue={columnRawValue} gap={gap}>
       {items.map(item => {
         return (
           <ItemOuter key={item._id} marginBottom={marginBottom}>

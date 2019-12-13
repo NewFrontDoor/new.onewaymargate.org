@@ -54,7 +54,7 @@ function getFormField(field) {
       return (
         <div className="fullwidth">
           <label htmlFor={field.id}>{field.label}</label>
-          <textarea id={field.id} name={field.label} />
+          <textarea id={field.id} name={field.label} rows="8" />
         </div>
       );
     case 'select':
@@ -112,7 +112,7 @@ export default function Form({title, id, description, fields}) {
           {fields.map(field => {
             return getFormField(field);
           })}
-        <input className="fullwidth" type="submit" value="Submit" />
+          <input className="fullwidth" type="submit" value="Submit" />
         </Grid>
       </fieldset>
     </form>

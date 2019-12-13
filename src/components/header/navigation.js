@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
 import styled from '@emotion/styled';
 import HamburgerMenu from 'react-hamburger-menu';
 import SearchIcon from '../../static/search';
@@ -39,7 +40,7 @@ const Search = styled('div')`
   width: 16px;
   color: #444446;
   height: 100%;
-  margin: 0 0 0 1.25em;
+  margin: 0.5em 0 0 1.25em;
   padding: 0;
   vertical-align: center;
   @media screen and (min-width: 768px) {
@@ -96,7 +97,9 @@ export default function Navigation({navlinks, offset}) {
           );
         })}
         <Search>
-          <SearchIcon color="white" />
+          <Link to="/search">
+            <SearchIcon color="white" />
+          </Link>
         </Search>
       </Nav>
     </>

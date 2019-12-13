@@ -36,9 +36,14 @@ export default function Page({slug, pageData}) {
               'slug': @.reference->slug.current
           }
         }
-      }
+      },
+      'mainImage': mainImage.asset->url
     }
   `;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pageData]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,21 +59,21 @@ export default function Page({slug, pageData}) {
     }
   }, [dataFetched, slug, pageData, pageQuery]);
 
-  return dataFetched ? (
-    <>
-      <Banner data={data} />
-      <Main
-        thing={
-          data.body.filter(obj => {
-            return obj._type === 'gridblock';
-          }).length
-        }
-      >
-        <HomeBlock blocks={data.body} />
-      </Main>
-    </>
-  ) : (
-    ''
+  return (
+    dataFetched && (
+      <>
+        <Banner data={data} />
+        <Main
+          thing={
+            data.body.filter(obj => {
+              return obj._type === 'gridblock';
+            }).length
+          }
+        >
+          <HomeBlock blocks={data.body} />
+        </Main>
+      </>
+    )
   );
 }
 
