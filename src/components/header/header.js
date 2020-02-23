@@ -11,10 +11,10 @@ const Nav = styled('nav')`
   top: 0;
   width: 100vw;
   padding: 0;
-  ${props => (props.offset > 50 ? `background-color: #4c516d;` : '')}
+  ${props => (props.offset > 50 ? `background-color: #3b8beb;` : '')}
   @media (min-width: 768px) {
     padding: 0.8em 0;
-    ${props => (props.offset > 50 ? `background-color: #4c516d;` : '')}
+    ${props => (props.offset > 50 ? `background-color: #3b8beb;` : '')}
   }
 `;
 

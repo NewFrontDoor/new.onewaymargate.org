@@ -24,7 +24,7 @@ const mainQuery = `
 
 const defQuery = `
 *[_type == "config"] {
-  "image": logo
+    themecolors
 }
 `;
 

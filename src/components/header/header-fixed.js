@@ -11,10 +11,9 @@ const Nav = styled('nav')`
   top: 0;
   width: 100vw;
   padding: 0;
-  background-color: #4c516d;
   @media (min-width: 768px) {
     padding: 0.8em 0;
-    ${props => (props.offset > 50 ? `background-color: #4c516d;` : '')}
+    background-color: rgb(59, 139, 235, ${props => props.offset / 50});
   }
 `;
 

@@ -30,7 +30,10 @@ export default function GridBlock({
   return (
     <Grid columns={columns} columnRawValue={columnRawValue} gap={gap}>
       {items.map(item => {
-        return (
+        console.log(item);
+        return item.id ? (
+          <div />
+        ) : (
           <ItemOuter key={item._id} marginBottom={marginBottom}>
             {renderProp(item, style)}
           </ItemOuter>

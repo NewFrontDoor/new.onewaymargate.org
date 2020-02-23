@@ -63,15 +63,17 @@ export default function Page({slug, pageData}) {
     dataFetched && (
       <>
         <Banner data={data} />
-        <Main
-          thing={
-            data.body.filter(obj => {
-              return obj._type === 'gridblock';
-            }).length
-          }
-        >
-          <HomeBlock blocks={data.body} />
-        </Main>
+        <div style={{backgroundColor: data.backgroundColor ? data.backgroundColor.hex : 'white'}}>
+          <Main
+            thing={
+              data.body.filter(obj => {
+                return obj._type === 'gridblock';
+              }).length
+            }
+          >
+            <HomeBlock blocks={data.body} />
+          </Main>
+        </div>
       </>
     )
   );

@@ -31,22 +31,31 @@ function AnchorSerializer({children, mark}) {
 
 const regex = /^(?!www\.|(?:http|ftp)s?:\/\/|[A-Za-z]:\\|\/\/).*/;
 
-export default function HorizontalCard({header, description, image, link}) {
+export default function HorizontalCard({
+  header,
+  title,
+  description,
+  shortdescription,
+  image,
+  mainImage,
+  link,
+  slug
+}) {
   return (
     <Wrapper>
-      {!link ? (
+      {!link && !slug ? (
         <Image
-          src={urlFor(image)
+          src={urlFor(image || mainImage)
             .width(200)
             .height(200)
             .auto('format')
             .url()}
           alt={header}
         />
-      ) : regex.test(link) ? (
-        <Link to={`/${link}`}>
+      ) : regex.test(link || slug) ? (
+        <Link to={`/${link || slug.current}`}>
           <Image
-            src={urlFor(image)
+            src={urlFor(image || mainImage)
               .width(200)
               .height(200)
               .auto('format')
@@ -62,23 +71,36 @@ export default function HorizontalCard({header, description, image, link}) {
               .height(200)
               .auto('format')
               .url()}
-            alt={header}
+            alt={header || title}
           />
         </a>
       )}
       <div>
-        <Header>{header}</Header>
-        <BlockContent
-          blocks={description}
-          serializers={{
-            types: {
-              p: CustomStyleSerializer
-            },
-            marks: {
-              anchor: AnchorSerializer
-            }
-          }}
-        />
+        {!link && !slug ? (
+          <Header>{header || title}</Header>
+        ) : regex.test(link || slug) ? (
+          <Link to={`/${link || slug.current}`}>
+            <Header style={{textDecoration: 'underline'}}>{header || title}</Header>
+          </Link>
+        ) : (
+          <a href={link}>
+            <Header  style={{textDecoration: 'underline'}}>{header || title}</Header>
+          </a>
+        )}
+        {description && (
+          <BlockContent
+            blocks={description}
+            serializers={{
+              types: {
+                p: CustomStyleSerializer
+              },
+              marks: {
+                anchor: AnchorSerializer
+              }
+            }}
+          />
+        )}
+        {shortdescription && <p>{shortdescription}</p>}
       </div>
     </Wrapper>
   );
