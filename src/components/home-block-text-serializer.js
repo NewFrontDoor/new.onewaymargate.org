@@ -2,6 +2,7 @@ import React from 'react';
 import BlockContent from '@sanity/block-content-to-react';
 import styled from '@emotion/styled';
 import {Link} from 'react-router-dom';
+import urlFor from '../lib/sanityImg';
 import Form from './form';
 import GridBlock from './grid-block';
 import Card from './card-grid-item';
@@ -16,6 +17,15 @@ function CustomStyleSerializer({children}) {
 
 function AnchorSerializer({children, mark}) {
   return <span id={mark.id}>{children}</span>;
+}
+
+function ImageSerializer({node}) {
+  return (
+    <img
+      src={urlFor(node)
+        .url()}
+    />
+  );
 }
 
 function GridBlockSerializer({node: {blocks, columns, style}}) {
@@ -62,7 +72,8 @@ export default function HomeBlock({blocks}) {
         types: {
           p: CustomStyleSerializer,
           form: FormSerializer,
-          gridblock: GridBlockSerializer
+          gridblock: GridBlockSerializer,
+          image: ImageSerializer
         },
         marks: {
           anchor: AnchorSerializer,
